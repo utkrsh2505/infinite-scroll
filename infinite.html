@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite</title>
+    <link rel="stylesheet" href="infinite.css"/>
+</head>
+<body>
+    <div class="container">
+       
+    </div>
+    <script>
+        
+        let limit = 25;
+        let pageCount = 1;
+     
+        
+   function fetchPost(){
+       return fetch(`https://jsonplaceholder.typicode.com/posts?_page=${pageCount}&_limit=${limit}`)
+       .then(function(response){
+           return response.json()
+       })
+       .then(function(response){
+           console.log(response);
+           showData(response)
+       })
+       .catch(function(error){
+
+       })
+   }
+   function showData(data){
+           const container = document.querySelector(".container")
+           data.map(element => {
+               var h3 = document.createElement("h3")
+               h3.textContent = element.title
+               console.log(h3.textContent);
+               
+               h3.className = "posts"
+               container.appendChild(h3)   
+           });
+
+        }
+        document.addEventListener('DOMContentLoaded', fetchPost)
+        window.addEventListener('scroll', () => {
+        const {scrollTop,clientHeight ,scrollHeight} = document.documentElement
+            if (scrollTop +clientHeight >=scrollHeight) {
+                setTimeout(() => {
+                    fetchPost();
+                }, 1000);
+            }
+        });
+   
+    </script>
+</body>
+</html>
